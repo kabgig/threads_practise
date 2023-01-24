@@ -13,6 +13,8 @@ public class FileDownloading implements Runnable {
             status.incrementTotalBytes();
         }
         status.done();
+        synchronized (status){
+        status.notifyAll();}
 
     }
 }

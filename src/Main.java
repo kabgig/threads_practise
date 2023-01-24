@@ -4,7 +4,14 @@ public class Main {
         Thread thread1 = new Thread(
                 new FileDownloading(status));
         Thread thread2 = new Thread(() -> {
-             while(!status.isDone()){}
+             while(!status.isDone()){
+                 synchronized (status){
+                 try {
+                     status.wait();
+                 } catch (InterruptedException e) {
+                     throw new RuntimeException(e);
+                 }}
+             }
             System.out.println(status.getTotalBytes());
         });
 
