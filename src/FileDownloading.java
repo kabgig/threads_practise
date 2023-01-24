@@ -7,10 +7,12 @@ public class FileDownloading implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(Thread.currentThread().getName() + " started");
-        for (int i = 0; i < 10_000; i++) {
+        System.out.println(Thread.currentThread()
+                .getName() + " started");
+        for (int i = 0; i < 1_000_000; i++) {
             status.incrementTotalBytes();
         }
+        status.done();
 
     }
 }

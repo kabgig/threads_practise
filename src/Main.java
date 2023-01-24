@@ -1,29 +1,15 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
         var status = new DownloadStatus();
+        Thread thread1 = new Thread(
+                new FileDownloading(status));
+        Thread thread2 = new Thread(() -> {
+             while(!status.isDone()){}
+            System.out.println(status.getTotalBytes());
+        });
 
-        List<Thread> threads = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            Thread thread = new Thread(new FileDownloading(status));
-            thread.start();
-            threads.add(thread);
-        }
-
-        for (var thread : threads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-
-        System.out.println("Total bytes: " + status.getTotalBytes());
-
+        thread1.start();
+        thread2.start();
 
     }
 }
