@@ -3,14 +3,12 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        var status = new DownloadStatus();
+
         List<Thread> threads = new ArrayList<>();
-        List<FileDownloading> tasks = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            var task = new FileDownloading();
-            tasks.add(task);
-
-            Thread thread = new Thread(task);
+            Thread thread = new Thread(new FileDownloading(status));
             thread.start();
             threads.add(thread);
         }
@@ -22,9 +20,10 @@ public class Main {
                 throw new RuntimeException(e);
             }
         }
-        var totalBytesSum =     tasks.stream()
-                .map(t -> t.getStatus().getTotalBytes())
-                .reduce(Integer::sum);
-        System.out.println(totalBytesSum);
+
+
+        System.out.println("Total bytes: " + status.getTotalBytes());
+
+
     }
 }
